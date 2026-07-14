@@ -23,12 +23,18 @@ const Contact = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3001/api/contact', {
+      const payload = {
+        ...formData,
+        access_key: "d49c18e0-d0bc-476e-87ed-619fd59f89e0"
+      };
+
+      const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
