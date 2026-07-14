@@ -1,0 +1,117 @@
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: var(--bg-dark);
+  padding-top: var(--nav-height);
+  overflow: hidden;
+}
+
+.hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background-image: linear-gradient(rgba(10, 17, 40, 0.7), rgba(10, 17, 40, 0.9)), url('/hero_bg.png');
+  background-size: cover;
+  background-position: center;
+}
+
+.globe-overlay {
+  position: absolute;
+  top: 10%;
+  right: -10%;
+  width: 800px;
+  height: 800px;
+  border-radius: 50%;
+  background: radial-gradient(circle, transparent 20%, var(--bg-dark) 70%), repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 4px), repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 4px);
+  z-index: 0;
+  transform: perspective(1000px) rotateX(60deg) rotateZ(45deg);
+  opacity: 0.8;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 700px;
+  z-index: 1;
+  padding: 4rem 0;
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.hero-title {
+  font-size: 4rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+
+.hero-subtitle {
+  font-size: 1.15rem;
+  margin-bottom: 3rem;
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Trusted Section */
+.hero-trusted {
+  width: 100%;
+  padding: 3rem 0;
+  background: linear-gradient(0deg, rgba(0,0,0,0.3) 0%, transparent 100%);
+  z-index: 1;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.trusted-text {
+  text-align: center;
+  font-size: 0.875rem;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.trusted-logos {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  opacity: 0.6;
+}
+
+.logo-placeholder {
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-family: sans-serif;
+  color: #fff;
+  letter-spacing: -1px;
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.75rem;
+  }
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  .hero-actions .btn {
+    width: 100%;
+  }
+  .trusted-logos {
+    gap: 1.5rem;
+    justify-content: center;
+  }
+}

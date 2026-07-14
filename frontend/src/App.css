@@ -1,0 +1,12 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  width: 100%;
+}
+
+section {
+  scroll-margin-top: var(--nav-height); /* So smooth scrolling doesn't hide content under fixed navbar */
+}
