@@ -83,9 +83,21 @@ app.post('/api/chat', async (req, res) => {
       return res.status(500).json({ reply: "I'm sorry, my AI brain is not fully configured right now (missing API key). Please try again later or use the Contact form!" });
     }
 
-    const model = genAI.getGenerativeModel({ 
-      model: "gemini-pro"
-    });
+    const modelResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${process.env.GEMINI_API_KEY}`);
+    const modelData = await modelResponse.json();
+    
+    let selectedModel = "gemini-1.5-flash";
+    if (modelData.models) {
+      for (const m of modelData.models) {
+        if (m.supportedGenerationMethods && m.supportedGenerationMethods.includes("generateContent")) {
+          const name = m.name.replace('models/', '');
+          selectedModel = name;
+          if (name.includes('flash')) break;
+        }
+      }
+    }
+
+    const model = genAI.getGenerativeModel({ model: selectedModel });
     
     const combinedMessage = `${systemPrompt}\n\nUser Message:\n${message}`;
     const result = await model.generateContent(combinedMessage);
