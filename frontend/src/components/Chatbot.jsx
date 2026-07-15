@@ -10,8 +10,16 @@ const Chatbot = () => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
+  const inputRef = useRef(null);
 
   const toggleChat = () => setIsOpen(!isOpen);
+
+  useEffect(() => {
+    if (isOpen && inputRef.current) {
+      // Focus the input field when chat opens
+      inputRef.current.focus();
+    }
+  }, [isOpen]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -98,6 +106,7 @@ const Chatbot = () => {
 
         <form onSubmit={handleSubmit} className="chatbot-input-form">
           <input
+            ref={inputRef}
             type="text"
             placeholder="Type your question..."
             value={input}
