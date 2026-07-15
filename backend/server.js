@@ -17,7 +17,7 @@ const PORT = 3001;
 app.use(cors());
 app.use(express.json());
 
-const MESSAGES_FILE = path.join(__dirname, 'messages.json');
+const MESSAGES_FILE = process.env.VERCEL ? '/tmp/messages.json' : path.join(__dirname, 'messages.json');
 
 // Ensure messages file exists
 if (!fs.existsSync(MESSAGES_FILE)) {
@@ -79,8 +79,12 @@ app.post('/api/chat', async (req, res) => {
   }
 
   try {
+    if (!process.env.GEMINI_API_KEY) {
+      return res.status(500).json({ reply: "I'm sorry, my AI brain is not fully configured right now (missing API key). Please try again later or use the Contact form!" });
+    }
+
     const model = genAI.getGenerativeModel({ 
-      model: "gemini-flash-latest",
+      model: "gemini-1.5-flash",
       systemInstruction: systemPrompt 
     });
     

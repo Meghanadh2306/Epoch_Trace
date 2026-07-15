@@ -47,7 +47,12 @@ const Chatbot = () => {
         const data = await response.json();
         setMessages(prev => [...prev, { role: 'bot', text: data.reply }]);
       } else {
-        setMessages(prev => [...prev, { role: 'bot', text: "Sorry, I'm having trouble connecting right now." }]);
+        try {
+          const errorData = await response.json();
+          setMessages(prev => [...prev, { role: 'bot', text: errorData.reply || `Error ${response.status}: Unable to connect.` }]);
+        } catch (e) {
+          setMessages(prev => [...prev, { role: 'bot', text: `Sorry, I'm having trouble connecting right now (HTTP ${response.status}).` }]);
+        }
       }
     } catch (error) {
       setMessages(prev => [...prev, { role: 'bot', text: "Network error. Please try again later." }]);
