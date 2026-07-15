@@ -110,4 +110,9 @@
     grid-template-columns: 1fr;
     gap: 3rem;
   }
+  
+  .video-placeholder {
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
 }
