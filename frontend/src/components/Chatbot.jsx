@@ -31,8 +31,8 @@ const Chatbot = () => {
     setIsLoading(true);
 
     try {
-      // In development, this points to localhost. In production, to the vercel backend.
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      // In development, this dynamically points to the current hostname (useful for mobile testing on local network)
+      const apiUrl = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:3001`;
       const response = await fetch(`${apiUrl}/api/chat`, {
         method: 'POST',
         headers: {
