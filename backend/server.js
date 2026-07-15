@@ -84,11 +84,11 @@ app.post('/api/chat', async (req, res) => {
     }
 
     const model = genAI.getGenerativeModel({ 
-      model: "gemini-1.5-flash-latest",
-      systemInstruction: systemPrompt 
+      model: "gemini-pro"
     });
     
-    const result = await model.generateContent(message);
+    const combinedMessage = `${systemPrompt}\n\nUser Message:\n${message}`;
+    const result = await model.generateContent(combinedMessage);
     const reply = result.response.text();
     
     res.status(200).json({ reply });
