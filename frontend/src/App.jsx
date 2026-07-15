@@ -6,6 +6,7 @@ import Services from './components/Services';
 import Industries from './components/Industries';
 import Process from './components/Process';
 import Contact from './components/Contact';
+import Chatbot from './components/Chatbot';
 
 function App() {
   return (
@@ -29,6 +30,9 @@ function App() {
       <div id="contact">
         <Contact />
       </div>
+      
+      {/* Global AI Chatbot */}
+      <Chatbot />
     </div>
   );
 }
