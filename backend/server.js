@@ -86,23 +86,45 @@ app.post('/api/chat', async (req, res) => {
     const modelResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${process.env.GEMINI_API_KEY}`);
     const modelData = await modelResponse.json();
     
-    let selectedModel = "gemini-1.5-flash";
+    let candidateModels = [];
     if (modelData.models) {
       for (const m of modelData.models) {
         if (m.supportedGenerationMethods && m.supportedGenerationMethods.includes("generateContent")) {
-          const name = m.name.replace('models/', '');
-          selectedModel = name;
-          if (name.includes('flash')) break;
+          candidateModels.push(m.name.replace('models/', ''));
         }
       }
     }
+    
+    // Sort to prefer 'flash' models, then sort descending by name (e.g. 3.0 before 2.5)
+    candidateModels.sort((a, b) => {
+      const aFlash = a.includes('flash') ? 1 : 0;
+      const bFlash = b.includes('flash') ? 1 : 0;
+      if (aFlash !== bFlash) return bFlash - aFlash;
+      return b.localeCompare(a);
+    });
 
-    const model = genAI.getGenerativeModel({ model: selectedModel });
-    
+    if (candidateModels.length === 0) candidateModels.push("gemini-1.5-flash");
+
     const combinedMessage = `${systemPrompt}\n\nUser Message:\n${message}`;
-    const result = await model.generateContent(combinedMessage);
+    let result = null;
+    let lastError = null;
+
+    for (const modelName of candidateModels) {
+      try {
+        const model = genAI.getGenerativeModel({ model: modelName });
+        result = await model.generateContent(combinedMessage);
+        break; // Success!
+      } catch (e) {
+        lastError = e;
+        console.warn(`Model ${modelName} failed: ${e.message}`);
+      }
+    }
+
+    if (!result) {
+      throw lastError || new Error("All available models failed.");
+    }
+
     const reply = result.response.text();
-    
     res.status(200).json({ reply });
   } catch (error) {
     console.error('AI Chat Error:', error);
