@@ -94,7 +94,7 @@ app.post('/api/chat', async (req, res) => {
     res.status(200).json({ reply });
   } catch (error) {
     console.error('AI Chat Error:', error);
-    res.status(500).json({ reply: "I'm sorry, I'm having trouble connecting to my AI brain right now. Please try again later or use the Contact form!" });
+    res.status(500).json({ reply: `Error from AI: ${error.message}` });
   }
 });
 
