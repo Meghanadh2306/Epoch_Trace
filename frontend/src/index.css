@@ -102,7 +102,7 @@ img {
   justify-content: center;
 }
 
-.bg-light {
+.bg-secondary {
   background-color: var(--bg-secondary);
 }
 
